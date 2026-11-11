@@ -1,0 +1,80 @@
+name: CI
+
+on:
+    push:
+        branches: [master]
+    pull_request:
+
+permissions:
+    contents: read
+
+# A newer push to the same branch cancels the runs of the older one.
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    quality:
+        name: Lint, types, unit tests, dist
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm run lint
+            - run: npm run typecheck
+            - run: npm run test:coverage
+            - name: dist is committed and up to date
+              run: npm run check:dist
+            - run: npm run lint:package
+            - run: npm audit --audit-level=high
+
+    nette-forms:
+        name: Unit tests with nette-forms ${{ matrix.nette-forms }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                # The lowest version of the peer dependency range and the latest one within it.
+                nette-forms: ['3.5.0', '3']
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm install --no-save nette-forms@${{ matrix.nette-forms }}
+            - run: npm test
+            - run: npm run typecheck
+
+    browsers:
+        name: Browser tests (Chromium, Firefox, WebKit, mobile Safari)
+        runs-on: ubuntu-latest
+        timeout-minutes: 20
+        # The official image has the browsers and their system libraries; installing them with apt on the runner was
+        # slow and could hang. Keep the tag on the version of @playwright/test in package-lock.json.
+        container:
+            image: mcr.microsoft.com/playwright:v1.65.0
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm run test:browser
+              env:
+                  # Firefox refuses to run as root with a HOME owned by another user (Playwright docs).
+                  HOME: /root
+            - uses: actions/upload-artifact@v7
+              if: failure()
+              with:
+                  name: playwright-report
+                  path: |
+                      playwright-report/
+                      test-results/
+                  retention-days: 7

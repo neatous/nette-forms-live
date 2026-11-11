@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "target": "ES2020",
+        "module": "ESNext",
+        "moduleResolution": "Bundler",
+        "lib": ["ES2021", "DOM", "DOM.Iterable"],
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "exactOptionalPropertyTypes": false,
+        "isolatedModules": true,
+        "verbatimModuleSyntax": true,
+        "skipLibCheck": false,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outDir": "dist/types",
+        "rootDir": "src"
+    },
+    "include": ["src"]
+}

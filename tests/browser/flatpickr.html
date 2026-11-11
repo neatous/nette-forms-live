@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>nette-forms-live with flatpickr</title>
+    <link rel="stylesheet" href="/node_modules/flatpickr/dist/flatpickr.min.css">
+    <style>
+        body { font: 16px sans-serif; margin: 20px; }
+        .invalid-feedback { display: none; color: #dc3545; }
+        .d-block { display: block; }
+    </style>
+</head>
+<body>
+<form id="form" action="#" method="post">
+    <div class="field">
+        <input name="date" id="date" data-nette-rules='[{"op":":filled","msg":"Choose a date"}]'>
+    </div>
+    <button type="submit" id="submit">Save</button>
+</form>
+<form id="form-plain" action="#" method="post">
+    <div class="field">
+        <input name="plain" id="plain" data-nette-rules='[{"op":":filled","msg":"Choose a plain date"}]'>
+    </div>
+    <button type="submit" id="submit-plain">Save</button>
+</form>
+<script src="/node_modules/nette-forms/src/assets/netteForms.js"></script>
+<script src="/node_modules/flatpickr/dist/flatpickr.min.js"></script>
+<script src="/dist/nette-forms-live.js"></script>
+<script>
+    NetteFormsLive.install(Nette);
+    flatpickr('#date', { altInput: true, altFormat: 'j. n. Y', dateFormat: 'Y-m-d', disableMobile: true });
+    flatpickr('#plain', { dateFormat: 'Y-m-d', disableMobile: true });
+    document.addEventListener('submit', (event) => event.preventDefault());
+</script>
+</body>
+</html>

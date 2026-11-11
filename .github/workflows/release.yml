@@ -1,0 +1,29 @@
+name: Release
+
+# Publishes the package to npm when a GitHub release is published (a plain tag does not publish anything). Needs the
+# @neatous scope on npm and the NPM_TOKEN secret of an account that may publish in it.
+
+on:
+    release:
+        types: [published]
+
+permissions:
+    contents: read
+    id-token: write # npm provenance
+
+jobs:
+    publish:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v7
+            - uses: actions/setup-node@v7
+              with:
+                  node-version: 22
+                  cache: npm
+                  registry-url: https://registry.npmjs.org
+            - name: The tag matches the version in package.json
+              run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
+            - run: npm ci
+            - run: npm publish --provenance --access public
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

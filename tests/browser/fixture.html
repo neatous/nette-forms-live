@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>nette-forms-live fixture</title>
+    <style>
+        body { font: 16px sans-serif; margin: 20px; }
+        .field { margin-bottom: 8px; }
+        .invalid-feedback { display: none; color: #dc3545; }
+        .d-block { display: block; }
+        input { display: block; padding: 6px; }
+    </style>
+</head>
+<body>
+<form id="form" action="#" method="post">
+    <div class="field"><input name="email" id="email" data-nette-rules='[{"op":":filled","msg":"E-mail is required"},{"op":":email","msg":"E-mail is not valid"}]'></div>
+    <div class="field"><input name="confirm" id="confirm" data-nette-rules='[{"op":":equal","arg":{"control":"email"},"msg":"The e-mails differ"}]'></div>
+    <div class="field"><input name="name" id="name" data-nette-rules='[{"op":":filled","msg":"Name is required"}]'></div>
+    <div class="field"><input name="amount" id="amount" type="number" data-nette-rules='[{"op":":filled","msg":"Amount is required"}]'></div>
+    <div class="field"><input name="note" id="note"></div>
+    <button type="submit" id="submit">Save</button>
+</form>
+<script src="/node_modules/nette-forms/src/assets/netteForms.js"></script>
+<script src="/dist/nette-forms-live.js"></script>
+<script>
+    NetteFormsLive.install(Nette, { badInputMessage: 'Enter a valid number' });
+    // Whether the library took over the browser bubble of an unparsable value (checked in the target phase, after the
+    // capture listener of the library on the document).
+    document.getElementById('amount').addEventListener('invalid', (event) => {
+        window.invalidPrevented = event.defaultPrevented;
+    });
+
+    // Counted on the document: nette-forms stops the propagation of the submit event of an invalid form.
+    window.submits = 0;
+    document.addEventListener('submit', (event) => {
+        event.preventDefault();
+        window.submits++;
+    });
+</script>
+</body>
+</html>

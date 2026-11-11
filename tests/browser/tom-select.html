@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>nette-forms-live with Tom Select</title>
+    <link rel="stylesheet" href="/node_modules/tom-select/dist/css/tom-select.bootstrap5.css">
+    <style>
+        body { font: 16px sans-serif; margin: 20px; }
+        .invalid-feedback { display: none; color: #dc3545; }
+        .d-block { display: block; }
+    </style>
+</head>
+<body>
+<form id="form" action="#" method="post">
+    <div class="field">
+        <select name="color" id="color" data-nette-rules='[{"op":":filled","msg":"Choose a color"}]'>
+            <option value="">Choose…</option>
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+        </select>
+    </div>
+    <button type="submit" id="submit">Save</button>
+</form>
+<script src="/node_modules/nette-forms/src/assets/netteForms.js"></script>
+<script src="/node_modules/tom-select/dist/js/tom-select.complete.min.js"></script>
+<script src="/dist/nette-forms-live.js"></script>
+<script>
+    NetteFormsLive.install(Nette);
+    new TomSelect('#color', { allowEmptyOption: true });
+    window.submits = 0;
+    document.addEventListener('submit', (event) => {
+        event.preventDefault();
+        window.submits++;
+    });
+</script>
+</body>
+</html>

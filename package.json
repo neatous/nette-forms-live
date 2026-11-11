@@ -1,0 +1,88 @@
+{
+    "name": "@neatous/nette-forms-live",
+    "version": "0.1.0",
+    "description": "Renders nette-forms validation errors in the page markup (Bootstrap 5 by default) and validates Nette forms live.",
+    "keywords": [
+        "nette",
+        "nette-forms",
+        "forms",
+        "validation",
+        "live-validation",
+        "bootstrap"
+    ],
+    "homepage": "https://github.com/neatous/nette-forms-live",
+    "bugs": "https://github.com/neatous/nette-forms-live/issues",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/neatous/nette-forms-live.git"
+    },
+    "license": "MIT",
+    "author": "Neatous, a.s.",
+    "type": "module",
+    "main": "./dist/nette-forms-live.esm.js",
+    "module": "./dist/nette-forms-live.esm.js",
+    "types": "./dist/types/nette-forms-live.d.ts",
+    "unpkg": "./dist/nette-forms-live.min.js",
+    "jsdelivr": "./dist/nette-forms-live.min.js",
+    "exports": {
+        ".": {
+            "types": "./dist/types/nette-forms-live.d.ts",
+            "default": "./dist/nette-forms-live.esm.js"
+        },
+        "./global": "./dist/nette-forms-live.js",
+        "./global.min": "./dist/nette-forms-live.min.js",
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "dist",
+        "src"
+    ],
+    "sideEffects": [
+        "./src/global.ts",
+        "./dist/nette-forms-live.js",
+        "./dist/nette-forms-live.min.js"
+    ],
+    "scripts": {
+        "build": "node build.mjs && tsc -p tsconfig.json",
+        "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tests/types/tsconfig.json",
+        "lint": "eslint .",
+        "test": "vitest run",
+        "test:browser": "playwright test",
+        "check:dist": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\" && npm run build && git diff --exit-code --text -- dist && test -z \"$(git ls-files --others --exclude-standard -- dist)\"",
+        "prepublishOnly": "npm run lint && npm run typecheck && npm test && npm run check:dist",
+        "test:coverage": "vitest run --coverage",
+        "lint:package": "publint"
+    },
+    "browserslist": [
+        "chrome >= 85",
+        "edge >= 85",
+        "firefox >= 90",
+        "safari >= 15",
+        "ios_saf >= 15",
+        "samsung >= 14"
+    ],
+    "peerDependencies": {
+        "nette-forms": ">=3.5.0 <4"
+    },
+    "peerDependenciesMeta": {
+        "nette-forms": {
+            "optional": true
+        }
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.0",
+        "@playwright/test": "^1.65.0",
+        "@vitest/coverage-v8": "^5.1.0",
+        "esbuild": "^0.28.2",
+        "eslint": "^10.14.0",
+        "flatpickr": "^4.6.13",
+        "globals": "^17.0.0",
+        "jsdom": "^31.0.0",
+        "nette-forms": "^3.5.3",
+        "publint": "^0.3.25",
+        "tom-select": "^2.7.0",
+        "typescript": "^6.0.3",
+        "typescript-eslint": "^8.72.2",
+        "vitest": "^5.1.0"
+    }
+}
