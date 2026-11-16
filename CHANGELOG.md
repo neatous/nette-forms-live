@@ -2,6 +2,16 @@
 
 All notable changes are documented here.
 
+## [Unreleased]
+
+### Fixed
+
+- With `validateOn.blur: 'always'`, leaving the flatpickr altInput or mobileInput validated the field, for example when
+  the arrow of the open calendar was clicked. These inputs (and the inputs of custom adapters whose typing edits the
+  value) are now validated on leave only after an edit, as with `'dirty'`. flatpickr validates the field when its value
+  changes, with `validateOn.change: true` (the default). Plain text fields and the search box of Tom Select keep
+  `'always'`.
+
 ## [1.0.1] - 2026-11-16
 
 The library is the same as in 1.0.0. Only the way it is released has changed.

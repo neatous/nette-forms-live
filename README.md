@@ -114,7 +114,7 @@ NetteFormsLive.install(Nette, { scrollToError: 'nearest' });
 | `widgets` | all three built-in adapters on | Set `tomSelect`, `select2` or `flatpickr` to `false` to switch the adapter off. An object under another key adds your own adapter. |
 | `ignore` | `'[data-nette-forms-live="off"]'` | A selector of fields, or of their ancestors, that are not validated live. The errors of a submit are still shown. |
 | `validateOn.change` | `true` | Validates a field when it is changed. |
-| `validateOn.blur` | `'dirty'` | Validates a text field when the user leaves it: `'dirty'` only after an edit, `'always'` every time, `false` never. |
+| `validateOn.blur` | `'dirty'` | Validates a text field when the user leaves it: `'dirty'` only after an edit, `'always'` every time, `false` never. The flatpickr altInput and mobileInput (and the inputs of custom adapters whose typing edits the value) are validated on leave only after an edit even with `'always'`, because clicking the calendar blurs them; flatpickr validates its field when the value changes (with `validateOn.change: true`, the default). |
 | `validateOn.input` | `'recheck'` | Says what typing does to a field that shows an error: `'recheck'` validates it again, `'clear'` hides the error, `false` does nothing. Typing never shows a new error. |
 | `focusFirstError` | `true` | Focuses the first visible field with an error after a submit. |
 | `focusOpensWidget` | `false` | Allows that focus to open a widget (a Tom Select dropdown, a flatpickr calendar). |

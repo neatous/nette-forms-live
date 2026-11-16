@@ -29,3 +29,12 @@ test('typing into the Tom Select search and leaving it does not validate the sel
     await expect(page.locator('.ts-wrapper')).not.toHaveClass(/is-invalid/);
     await expect(page.locator('[data-nette-forms-live-feedback]')).toHaveCount(0);
 });
+
+test('blur always still validates a Tom Select left without a choice', async ({ page }) => {
+    await page.goto('/tests/browser/tom-select-always.html');
+    await page.locator('.ts-control').click();
+    await page.keyboard.press('Tab');
+
+    await expect(page.locator('.ts-wrapper')).toHaveClass(/is-invalid/);
+    await expect(page.locator('[data-nette-forms-live-feedback]')).toHaveText('Choose a color');
+});

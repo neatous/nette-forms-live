@@ -564,11 +564,13 @@ var onChange = (event) => {
   }
 };
 var onFocusOut = (event) => {
-  const holder = ruleHolder(resolveControl(event.target));
-  const mode = options.validateOn.blur;
-  if (!mode || !holder || !isTextLike(event.target) || isIgnored(holder)) {
+  const control = resolveControl(event.target);
+  const holder = ruleHolder(control);
+  if (!options.validateOn.blur || !holder || !isTextLike(event.target) || isIgnored(holder)) {
     return;
   }
+  const isWidgetInput = event.target !== control && isFormControl(control) && !isSearchInput(event.target, control);
+  const mode = isWidgetInput && options.validateOn.blur === "always" ? "dirty" : options.validateOn.blur;
   if (mode === "dirty" && !dirty.has(holder)) {
     return;
   }
