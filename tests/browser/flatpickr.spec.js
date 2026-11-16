@@ -31,7 +31,7 @@ test('a plain flatpickr (without altInput) is focused without opening the calend
 // With validateOn.blur 'always', clicking the arrow of the open calendar blurs the altInput; the user is still picking.
 // The postponed validation runs in a later task, so the negative assertions wait a moment first.
 for (const [name, selector] of [['editable', '#date + input'], ['read-only', '#ro + input']]) {
-    test(`blur always does not validate the ${name} flatpickr alt input while the calendar is used`, async ({ page }) => {
+    test(`blur always does not validate the ${name} flatpickr alt input while the calendar is used`, async ({ page, hasTouch }) => {
         await page.goto('/tests/browser/flatpickr-always.html');
 
         const altInput = page.locator(selector);
@@ -48,7 +48,8 @@ for (const [name, selector] of [['editable', '#date + input'], ['read-only', '#r
         await page.waitForTimeout(100);
         await expect(altInput).not.toHaveClass(/is-invalid/);
 
-        await page.locator('#outside').click();
+        // On a touch device flatpickr closes the calendar on touchstart, which click() does not dispatch.
+        await (hasTouch ? page.locator('#outside').tap() : page.locator('#outside').click());
         await expect(page.locator('.flatpickr-calendar.open')).toHaveCount(0);
         await page.waitForTimeout(100);
         await expect(altInput).not.toHaveClass(/is-invalid/);
