@@ -51,11 +51,11 @@ yarn add @neatous/nette-forms-live
 ```
 
 Without a package manager, download the built file and put it in the public folder of your project. Take it from
-[`dist/nette-forms-live.min.js`](https://github.com/neatous/nette-forms-live/blob/v1.0.0/dist/nette-forms-live.min.js)
+[`dist/nette-forms-live.min.js`](https://github.com/neatous/nette-forms-live/blob/v1.0.1/dist/nette-forms-live.min.js)
 on GitHub ("Download raw file"), or load it from a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/@neatous/nette-forms-live@1.0.0/dist/nette-forms-live.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@neatous/nette-forms-live@1.0.1/dist/nette-forms-live.min.js"></script>
 ```
 
 Keep the exact version in the URL, so the file does not change unexpectedly.

@@ -2,6 +2,18 @@
 
 All notable changes are documented here.
 
+## [1.0.1] - 2026-11-16
+
+The library is the same as in 1.0.0. Only the way it is released has changed.
+
+### Changed
+
+- Releases are built by GitHub Actions and published with npm trusted publishing (OIDC), so no npm token is stored
+  anywhere. Each version comes with a provenance attestation that links it to the commit and the workflow run it was
+  built from.
+- A version built by CI is staged on npm first and becomes public only after a maintainer approves it with two-factor
+  authentication.
+
 ## [1.0.0] - 2026-11-16
 
 The first release, published on npm as `@neatous/nette-forms-live`.
@@ -24,4 +36,5 @@ The first release, published on npm as `@neatous/nette-forms-live`.
 - The `nette-forms-live:errors` event reports every validation.
 - The [usage guide](docs/usage.md) has examples and covers the migration from live-form-validation.
 
+[1.0.1]: https://github.com/neatous/nette-forms-live/releases/tag/v1.0.1
 [1.0.0]: https://github.com/neatous/nette-forms-live/releases/tag/v1.0.0

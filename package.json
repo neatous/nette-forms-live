@@ -1,6 +1,6 @@
 {
     "name": "@neatous/nette-forms-live",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Renders nette-forms validation errors in the page markup (Bootstrap 5 by default) and validates Nette forms live.",
     "keywords": [
         "nette",
