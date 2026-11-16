@@ -42,33 +42,23 @@ The library needs neither jQuery nor any other dependency. Its listeners are on 
 
 ## Installation
 
-The package is not on npm yet. Install it from GitHub:
+Install the package from npm:
 
 ```sh
-yarn add @neatous/nette-forms-live@github:neatous/nette-forms-live#master
+npm install @neatous/nette-forms-live
 # or
-npm install github:neatous/nette-forms-live#master
-```
-
-The built files are part of the repository, so nothing is built on installation. The lock file pins the installed
-commit. To move to the latest one, run:
-
-```sh
-yarn upgrade @neatous/nette-forms-live
-# or
-npm update @neatous/nette-forms-live
+yarn add @neatous/nette-forms-live
 ```
 
 Without a package manager, download the built file and put it in the public folder of your project. Take it from
-[`dist/nette-forms-live.min.js`](https://github.com/neatous/nette-forms-live/blob/master/dist/nette-forms-live.min.js)
-on GitHub ("Download raw file"), or load it from jsDelivr, which serves files straight from GitHub:
+[`dist/nette-forms-live.min.js`](https://github.com/neatous/nette-forms-live/blob/v1.0.0/dist/nette-forms-live.min.js)
+on GitHub ("Download raw file"), or load it from a CDN:
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/neatous/nette-forms-live@master/dist/nette-forms-live.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@neatous/nette-forms-live@1.0.0/dist/nette-forms-live.min.js"></script>
 ```
 
-Once a version is released, replace `master` with its tag (for example `@v0.1.0`), so the file does not change
-unexpectedly.
+Keep the exact version in the URL, so the file does not change unexpectedly.
 
 ### With script tags or file concatenation
 

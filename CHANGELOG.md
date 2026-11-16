@@ -2,9 +2,9 @@
 
 All notable changes are documented here.
 
-## Unreleased
+## [1.0.0] - 2026-11-16
 
-The library is not released yet. Install it from the `master` branch on GitHub.
+The first release, published on npm as `@neatous/nette-forms-live`.
 
 ### Added
 
@@ -23,3 +23,5 @@ The library is not released yet. Install it from the `master` branch on GitHub.
   optional.
 - The `nette-forms-live:errors` event reports every validation.
 - The [usage guide](docs/usage.md) has examples and covers the migration from live-form-validation.
+
+[1.0.0]: https://github.com/neatous/nette-forms-live/releases/tag/v1.0.0

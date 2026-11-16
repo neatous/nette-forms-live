@@ -1,7 +1,9 @@
 name: Release
 
-# Publishes the package to npm when a GitHub release is published (a plain tag does not publish anything). Needs the
-# @neatous scope on npm and the NPM_TOKEN secret of an account that may publish in it.
+# Publishes the package to npm when a GitHub release is published (a plain tag does not publish anything). It uses npm
+# trusted publishing (OIDC), so no token is stored: on npmjs.com, the package must have this repository and this
+# workflow file set as its trusted publisher. A version that is already on npm (for example published by hand) is
+# skipped.
 
 on:
     release:
@@ -23,7 +25,15 @@ jobs:
                   registry-url: https://registry.npmjs.org
             - name: The tag matches the version in package.json
               run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
-            - run: npm ci
-            - run: npm publish --provenance --access public
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+            - name: Skip a version that is already on npm
+              id: published
+              run: |
+                  if npm view "$(node -p "require('./package.json').name")@$(node -p "require('./package.json').version")" version >/dev/null 2>&1; then
+                      echo "skip=true" >> "$GITHUB_OUTPUT"
+                  fi
+            - if: steps.published.outputs.skip != 'true'
+              run: npm install --global npm@latest # trusted publishing needs a recent npm CLI
+            - if: steps.published.outputs.skip != 'true'
+              run: npm ci
+            - if: steps.published.outputs.skip != 'true'
+              run: npm publish --provenance --access public
