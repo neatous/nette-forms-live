@@ -68,7 +68,10 @@ export interface WidgetAdapter {
     focus?(control: FormControl, options: { open: boolean }): boolean;
     /** The original control an element of the widget belongs to (events come from the widget's own inputs). */
     originalOf?(element: Element): FormControl | null;
-    /** Whether typing into the widget's own input edits the value (false for a search box); true by default. */
+    /**
+     * Whether typing into the widget's own input edits the value (false for a search box); true by default. With
+     * validateOn.blur 'always', an input whose typing edits the value is validated on leave only after an edit.
+     */
     inputEditsValue?: boolean;
 }
 
@@ -77,7 +80,12 @@ export type WidgetName = 'tomSelect' | 'select2' | 'flatpickr';
 export interface ValidateOn {
     /** Validate a changed control. */
     change: boolean;
-    /** 'dirty': validate a left text field edited since its last validation; 'always': every left text field; false: never. */
+    /**
+     * 'dirty': validate a left text field edited since its last validation; 'always': every left text field; false:
+     * never. The altInput and mobileInput of flatpickr (and the inputs of custom adapters whose typing edits the value)
+     * are validated on leave only after an edit even with 'always'; flatpickr validates its field when the value
+     * changes, if `change` is true.
+     */
     blur: 'dirty' | 'always' | false;
     /**
      * 'recheck': while a control shows an error, typing rechecks it and removes the error once valid (new errors are
@@ -971,12 +979,17 @@ const onChange = (event: Event): void => {
 };
 
 const onFocusOut = (event: FocusEvent): void => {
-    const holder = ruleHolder(resolveControl(event.target));
-    const mode = options.validateOn.blur;
+    const control = resolveControl(event.target);
+    const holder = ruleHolder(control);
 
-    if (!mode || !holder || !isTextLike(event.target) || isIgnored(holder)) {
+    if (!options.validateOn.blur || !holder || !isTextLike(event.target) || isIgnored(holder)) {
         return;
     }
+
+    // Leaving the input of a widget does not mean the user is done: clicking the arrow of an open flatpickr calendar
+    // blurs its altInput. Such an input is validated on leave only after an edit; the widget validates on change.
+    const isWidgetInput = event.target !== control && isFormControl(control) && !isSearchInput(event.target, control);
+    const mode = isWidgetInput && options.validateOn.blur === 'always' ? 'dirty' : options.validateOn.blur;
 
     if (mode === 'dirty' && !dirty.has(holder)) {
         return;

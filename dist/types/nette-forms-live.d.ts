@@ -63,14 +63,22 @@ export interface WidgetAdapter {
     }): boolean;
     /** The original control an element of the widget belongs to (events come from the widget's own inputs). */
     originalOf?(element: Element): FormControl | null;
-    /** Whether typing into the widget's own input edits the value (false for a search box); true by default. */
+    /**
+     * Whether typing into the widget's own input edits the value (false for a search box); true by default. With
+     * validateOn.blur 'always', an input whose typing edits the value is validated on leave only after an edit.
+     */
     inputEditsValue?: boolean;
 }
 export type WidgetName = 'tomSelect' | 'select2' | 'flatpickr';
 export interface ValidateOn {
     /** Validate a changed control. */
     change: boolean;
-    /** 'dirty': validate a left text field edited since its last validation; 'always': every left text field; false: never. */
+    /**
+     * 'dirty': validate a left text field edited since its last validation; 'always': every left text field; false:
+     * never. The altInput and mobileInput of flatpickr (and the inputs of custom adapters whose typing edits the value)
+     * are validated on leave only after an edit even with 'always'; flatpickr validates its field when the value
+     * changes, if `change` is true.
+     */
     blur: 'dirty' | 'always' | false;
     /**
      * 'recheck': while a control shows an error, typing rechecks it and removes the error once valid (new errors are
