@@ -1,9 +1,10 @@
 name: Release
 
-# Publishes the package to npm when a GitHub release is published (a plain tag does not publish anything). It uses npm
-# trusted publishing (OIDC), so no token is stored: on npmjs.com, the package must have this repository and this
-# workflow file set as its trusted publisher. A version that is already on npm (for example published by hand) is
-# skipped.
+# Stages the package on npm when a GitHub release is published (a plain tag does not stage anything). The version becomes
+# public only after a maintainer approves it with 2FA, on npmjs.com in the Staged Packages tab or with
+# `npm stage approve <stage-id>`. It uses npm trusted publishing (OIDC), so no token is stored: on npmjs.com, the package
+# has this repository and this workflow file as its trusted publisher, allowed to stage only. A version that is already
+# on npm (for example published by hand) is skipped.
 
 on:
     release:
@@ -21,7 +22,7 @@ jobs:
             - uses: actions/setup-node@v7
               with:
                   node-version: 22
-                  cache: npm
+                  package-manager-cache: false # no cache in release builds
                   registry-url: https://registry.npmjs.org
             - name: The tag matches the version in package.json
               run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
@@ -32,8 +33,8 @@ jobs:
                       echo "skip=true" >> "$GITHUB_OUTPUT"
                   fi
             - if: steps.published.outputs.skip != 'true'
-              run: npm install --global npm@latest # trusted publishing needs a recent npm CLI
+              run: npm install --global npm@latest # staged publishing needs npm 11.15 or later
             - if: steps.published.outputs.skip != 'true'
               run: npm ci
             - if: steps.published.outputs.skip != 'true'
-              run: npm publish --provenance --access public
+              run: npm stage publish --provenance --access public
