@@ -81,7 +81,7 @@
         "nette-forms": "^3.5.3",
         "publint": "^0.3.25",
         "tom-select": "^2.7.0",
-        "typescript": "^6.0.3",
+        "typescript": "^7.0.2",
         "typescript-eslint": "^8.72.2",
         "vitest": "^5.1.0"
     }
